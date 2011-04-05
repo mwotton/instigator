@@ -1,0 +1,6 @@
+Instigator is a template for Haskell projects, intended to make it
+easier to start a project with all of the goodies like testing, github
+repo and optionally Jenkins integration set up.
+
+It is not going to be particularly configurable: if you don't like the
+way a particular thing works, fork the project and change it.
