@@ -26,7 +26,7 @@ module Instigator
       system "cabal init -m -n #{name} -l BSD3 -a Mark Wotton -e mwotton@gmail.com -c #{category} -q"
       # this will always append a 'Library' line - delete it for
       # clarity
-      system "sed -i '' '$d' #{name}.cabal"
+      system "sed   -i '$d' #{name}.cabal"
 
       system "echo and now"
       system "cat #{name}.cabal"
