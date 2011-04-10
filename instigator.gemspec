@@ -8,14 +8,15 @@ Gem::Specification.new do |s|
   s.authors     = []
   s.email       = []
   s.homepage    = "http://rubygems.org/gems/instigator"
-  s.summary     = "TODO: Write a gem summary"
-  s.description = "TODO: Write a gem description"
+  s.summary     = "Project starter for Haskell"
+  s.description = "Project starter for Haskell: sets up CI & github integration, along with best-practice stuff like tests and hlint"
 
   s.required_rubygems_version = ">= 1.3.6"
   s.rubyforge_project         = "instigator"
 
   s.add_development_dependency "bundler", ">= 1.0.0.rc.6"
-
+  s.add_dependency 'thor'
+  
   s.files        = `git ls-files`.split("\n")
   s.executables  = `git ls-files`.split("\n").map{|f| f =~ /^bin\/(.*)/ ? $1 : nil}.compact
   s.require_path = 'lib'
