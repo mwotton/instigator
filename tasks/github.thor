@@ -7,23 +7,22 @@ require 'git_config'
 
 class Github < Thor
   include GitConfig
-  
+  argument :name
   desc "delete_project", "erase github project. BE VERY SURE"
-  method_option :name, :type => :string, :required => true
+
   method_option :confirm, :type => :boolean
   def delete_project
     abort "set --confirm to show you really mean it" unless options.confirm?
     res = github_post("/repos/delete/#{github_user}/#{options.name}", :name => options.name)
     delete_token = JSON.parse(res.body)['delete_token']
     github_post("/repos/delete/#{github_user}/#{options.name}", :name => options.name, :delete_token => delete_token)
-
   end
 
-
-  
   desc "new_project", "new project on github"
-  method_option :name, :type => :string, :required => true
   def new_project
+    guarded "git init"
+    guarded "git add ."
+    guarded "git commit -m 'initial commit'"
     github_post('/repos/create', :name => options.name)
     guarded "git remote add origin git@github.com:#{github_user}/#{options.name}"
     guarded "git push -u origin master"

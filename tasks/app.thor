@@ -15,7 +15,6 @@ class App < Thor
   def setup
     puts options.project_type
     invoke "#{options.project_type}:setup", [name]
-    invoke "git:init"
     invoke "github:new_project"
     invoke "jenkins:new_project"
     invoke "github:add_jenkins"

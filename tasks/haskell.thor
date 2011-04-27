@@ -7,7 +7,6 @@ class Haskell < Thor
   include Thor::Actions
 
   attr_reader :mod
-  
   argument :name
   
   def self.source_root
@@ -19,6 +18,7 @@ class Haskell < Thor
     invoke :mkdir
     invoke :skeleton
     invoke :cabal_dev
+    Dir.chdir '..'
   end
   
   desc "mkdir","create the directory"

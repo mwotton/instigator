@@ -1,23 +1,19 @@
-Name:                <%= name %>
+Name:                cabalconsole
 Version:             0.1
 License:             BSD3
 License-file:        LICENSE
-Author:              <%= author %>, <<%= email %>>
-Maintainer:          <%= author %>, <<%= email %>>
+Author:              Mark Wotton, <mwotton@gmail.com>
+Maintainer:          Mark Wotton, <mwotton@gmail.com>
 Category:            Development
 Build-type:          Simple
 Cabal-version:       >=1.2
 
-<% if options.lib? %>
+
 Library
   -- this is an awful hack, but if we don't specify QC1 here
   -- tbc will grab something else. FIXME PLZ!
   Build-Depends: base, QuickCheck >= 1.1 && <2, hlint, TBC
   Hs-source-dirs:      src
-<% end %>
 
-<% if options.app? %>
-Executable <%= name %>
-  Main-is: src/Main.hs
-  Hs-source-dirs:      src        
-<% end %>
+
+
