@@ -1,0 +1,5 @@
+# run tests when they're changed
+watch('Tests/.*hs'){|md| system "tbc #{md[0]}"}
+# for the moment, when anything changes, run everything
+# we could be more sophisticated, but let's get it running first.
+watch('<%= mod %>/(.*).hs') {|md| system "tbc Tests; hlint . "} 
