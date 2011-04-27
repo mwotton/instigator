@@ -22,7 +22,7 @@ module GitConfig
 
   # should possibly be elsewhere?  
   def guarded(task)
-    %x{#{task}}.tap { raise "bad exit" if $?.exitstatus!=0 }
+    %x{#{task}}.tap { |x| raise "bad exit: #{x}" if $?.exitstatus!=0 }
   rescue => e
     raise e unless block_given?
     yield e
