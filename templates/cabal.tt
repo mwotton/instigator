@@ -17,5 +17,5 @@ Library
 
 <% if options.app? %>
 Executable <%= name %>
-  Main-is: <%= mod %>/Main.hs
+  Main-is: src/Main.hs
 <% end %>

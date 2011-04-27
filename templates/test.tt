@@ -2,7 +2,7 @@
 
 module T where
 
-import <%= mod %>
+import <%= @mod %>
 import Test.QuickCheck(property)
 
 test_failing = foo == 1
