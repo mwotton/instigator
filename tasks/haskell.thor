@@ -18,16 +18,11 @@ class Haskell < Thor
     invoke :mkdir
     invoke :skeleton
     invoke :cabal_dev
-    Dir.chdir '..'
   end
   
   desc "mkdir","create the directory"
 
   def mkdir
-    # use current directory as base + new dir with 'name'
-    puts "creating #{Dir.getwd}/#{name}"
-    Dir.mkdir name rescue abort "directory already exists!"
-    Dir.chdir name
     Dir.mkdir "Tests"
   end
 
@@ -37,25 +32,23 @@ class Haskell < Thor
   method_option :lib, :default => true, :type => :boolean
   method_options :app => false, :type => :boolean  
   def skeleton
-
     @mod = name.camelize
-    
     system "cabal init -m -n #{name} -l BSD3 -a Mark Wotton -e mwotton@gmail.com -c #{options.category} -q"
     system "rm #{name}.cabal"
     # overwrite the cabal file
-    template 'cabal.tt', "#{name}/#{name}.cabal"
-    template 'test.tt', "#{name}/Tests/Test#{@mod}.hs"
-    template 'module.tt', "#{name}/src/#{@mod}.hs"
-    template 'main.tt',   "#{name}/src/Main.hs" if options.app?
-    template 'watchr.tt', "#{name}/watchr.rb"
-    template 'README.tt', "#{name}/README.md"
+    template 'cabal.tt', "#{name}.cabal"
+    template 'test.tt', "Tests/Test#{@mod}.hs"
+    template 'module.tt', "src/#{@mod}.hs"
+    template 'main.tt',   "src/Main.hs" if options.app?
+    template 'watchr.tt', "watchr.rb"
+    template 'README.tt', "README.md"
   end
 
   desc "cabal_dev", "ensure cabal-dev is present"
   def cabal_dev
     guarded "[ -x `which cabal-dev` ] || cabal install cabal-dev" or raise "cabal not installed"
     # system "cabal-dev install-deps"
-    system "cabal install"
+    guarded "cabal install"
   end
   
 end

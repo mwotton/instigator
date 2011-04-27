@@ -27,7 +27,12 @@ class Github < Thor
     guarded "git remote add origin git@github.com:#{github_user}/#{name}"
     guarded "git push -u origin master"
   end
-
+  
+  desc "add_jenkins", "sync up github and jenkins"
+  def add_jenkins
+    puts "later"
+  end
+  
   no_tasks do
   def github_post(path, args)
     # More like NOT::HTTP, amirite?
