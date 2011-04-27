@@ -2,8 +2,8 @@ require 'skeleton'
 
 class Skeleton::Haskell < Thor
 
-  desc "haskell", "set up a haskell project"
-  def haskell
+  desc "setup", "set up a haskell project"
+  def setup
     invoke :mkdir
     invoke :skeleton
     invoke :cabal_dev

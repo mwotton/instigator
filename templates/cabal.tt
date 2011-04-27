@@ -2,20 +2,20 @@ Name:                <%= name %>
 Version:             0.1
 License:             BSD3
 License-file:        LICENSE
-Author:              <%= author %>
-Maintainer:          <%= author_email %>
+Author:              <%= author %>, <<%= email %>>
+Maintainer:          <%= author %>, <<%= email %>>
 Category:            Development
 Build-type:          Simple
 Cabal-version:       >=1.2
 
-<% if lib? %>
+<% if options.lib? %>
 Library
   -- this is an awful hack, but if we don't specify QC1 here
   -- tbc will grab something else. FIXME PLZ!
   Build-Depends: base, QuickCheck >= 1.1 && <2, hlint, TBC
 <% end %>
 
-<% if app? %>
+<% if options.app? %>
 Executable <%= name %>
   Main-is: <%= mod %>/Main.hs
 <% end %>

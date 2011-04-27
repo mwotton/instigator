@@ -1,18 +1,20 @@
 # must be a nicer way of doing this
 $LOAD_PATH << File.join(File.dirname(__FILE__), '..', 'lib')
 require 'instigator'
-require 'instigator/skeleton'
-require 'instigator/skeleton/haskell'
+#require 'instigator/skeleton'
+#require 'instigator/skeleton/haskell'
 
-require 'instigator/jenkins'
-require 'instigator/github'
-require 'active_support/inflector'
+#require 'instigator/jenkins'
+#require 'instigator/github'
+# require 'active_support/inflector'
 
 class App < Thor
   desc "setup", "create a new app"
-  method_option :template, :type => :string, :default => "haskell"
-  def setup(name)
-    invoke "skeleton:#{options[:template]}"
+  argument :name # don't need it here, but still...
+  method_option :project_type, :type => :string, :default => "haskell"
+  def setup
+    puts options.project_type
+    invoke "#{options.project_type}:setup", [name]
     invoke "git:init"
     invoke "github:new_project"
     invoke "jenkins:new_project"
