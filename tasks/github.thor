@@ -13,9 +13,9 @@ class Github < Thor
   method_option :confirm, :type => :boolean
   def delete_project
     abort "set --confirm to show you really mean it" unless options.confirm?
-    res = github_post("/repos/delete/#{github_user}/#{options.name}", :name => options.name)
+    res = github_post("/repos/delete/#{github_user}/#{name}", :name => name)
     delete_token = JSON.parse(res.body)['delete_token']
-    github_post("/repos/delete/#{github_user}/#{options.name}", :name => options.name, :delete_token => delete_token)
+    github_post("/repos/delete/#{github_user}/#{name}", :name => name, :delete_token => delete_token)
   end
 
   desc "new_project", "new project on github"
@@ -23,8 +23,8 @@ class Github < Thor
     guarded "git init"
     guarded "git add ."
     guarded "git commit -m 'initial commit'"
-    github_post('/repos/create', :name => options.name)
-    guarded "git remote add origin git@github.com:#{github_user}/#{options.name}"
+    github_post('/repos/create', :name => name)
+    guarded "git remote add origin git@github.com:#{github_user}/#{name}"
     guarded "git push -u origin master"
   end
 
