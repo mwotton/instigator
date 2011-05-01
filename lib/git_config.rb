@@ -20,6 +20,18 @@ module GitConfig
     git_attribute 'github.user', 'username'
   end
 
+  def jenkins_server
+    git_attribute 'jenkins.server', 'server'
+  end
+
+  def jenkins_user
+    git_attribute 'jenkins.user', 'user'
+  end
+
+  def jenkins_password
+    git_attribute 'jenkins.password', 'password'
+  end
+  
   # should possibly be elsewhere?  
   def guarded(task)
     %x{#{task}}.tap { |x| raise "bad exit: #{x}" if $?.exitstatus!=0 }
@@ -32,7 +44,7 @@ module GitConfig
   protected
   def git_attribute(tag, name)
     guarded("git config --global #{tag}") do |error|
-      abort "please add your #{name} to ~/.gitconfig with git config --global #{tag} #{name.to_upper}"
+      abort "please add your #{name} to ~/.gitconfig with git config --global #{tag} #{name.upcase}"
     end.chomp
   end
  
