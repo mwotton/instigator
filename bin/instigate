@@ -1,5 +1,5 @@
 #! /usr/bin/env ruby
 require 'thor'
-require 'tasks/app.thor'
+require 'app'
 
 App.start

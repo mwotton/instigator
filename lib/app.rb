@@ -3,7 +3,7 @@ $LOAD_PATH << File.join(File.dirname(__FILE__), '..', 'lib')
 require 'instigator'
 
 class App < Thor
-  desc "new", "create a new app"
+  desc "setup", "create a new app"
   argument :name # don't need it here, but still...
   method_option :project_type, :type => :string, :default => "haskell"
   def setup
