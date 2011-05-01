@@ -1,3 +1,0 @@
-class Git < Thor
-  
-end
