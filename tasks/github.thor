@@ -28,9 +28,23 @@ class Github < Thor
     guarded "git push -u origin master"
   end
   
-  desc "add_jenkins", "sync up github and jenkins"
-  def add_jenkins
-    puts "later"
+  desc "attach", "sync up github and jenkins"
+  method_option :token, :type => :string, :required => true
+  def attach
+    res =<<"EOF"
+So, I know this is annoying, but github post-commits are bastard hard to script
+ Would you mind terribly going to
+
+    https://github.com/#{github_user}/#{name}/admin/hooks
+
+and adding
+
+    #{jenkins_server}/job/#{name}/build?token=#{options.token}
+
+as a remote hook? Ta ever so muchly. (If you feel like automating this,
+fork and send me a pull request and we'll be BFF.)
+EOF
+    puts res
   end
   
   no_tasks do
