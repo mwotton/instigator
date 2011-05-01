@@ -1,8 +1,6 @@
 require 'uuid'
-require 'erb'
 require 'httparty'
-# require 'jenkins'
-
+require 'git_config'
 
 class Jenkins < Thor
   argument :name

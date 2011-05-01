@@ -1,5 +1,4 @@
 require 'uuid'
-# require 'octokit'
 require 'net/https'
 require 'net/http'
 require 'json'

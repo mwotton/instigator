@@ -5,8 +5,8 @@ Gem::Specification.new do |s|
   s.name        = "instigator"
   s.version     = Instigator::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.authors     = []
-  s.email       = []
+  s.authors     = ["Mark Wotton"]
+  s.email       = ['mwotton@gmail.com']
   s.homepage    = "http://rubygems.org/gems/instigator"
   s.summary     = "Project starter for Haskell"
   s.description = "Project starter for Haskell: sets up CI & github integration, along with best-practice stuff like tests and hlint"
