@@ -1,6 +1,5 @@
 #! /usr/bin/env ruby
 require 'thor'
 require 'app'
-ARGV.push 'app:setup'
-
+ARGV.unshift 'setup'
 App.start
