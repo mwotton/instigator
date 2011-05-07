@@ -18,11 +18,10 @@ class Jenkins < Thor
   desc "new_project", "set up new jenkins project"
   def new_project
     @secret = UUID.new.generate
-    puts Dir.pwd
-    template 'config_xml.tt', 'config.xml'
-    jenkins_post("/createItem/api/xml?name=#{name}", File.read('config.xml'))
-    # post to blah
-    File.delete 'config.xml'
+    Tempfile.open("/tmp/config_xml") do |f|
+      template 'config_xml.tt', f.path
+      jenkins_post "/createItem/api/xml?name=#{name}", f.read
+    end
     invoke 'github:attach', [name], :token => @secret
   end
 
