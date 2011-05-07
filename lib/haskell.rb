@@ -46,7 +46,10 @@ class Haskell < Thor
 
   desc "cabal_dev", "ensure cabal-dev is present"
   def cabal_dev
-    guarded "[ -x `which cabal-dev` ] || cabal install cabal-dev" or raise "cabal not installed"
+    ["cabal-dev", "happy"].each do |prereq|
+      guarded "[ -x `which #{prereq}` ] || cabal install #{prereq}" or raise "#{prereq} not installed"
+    end
+
     # system "cabal-dev install-deps"
     guarded "cabal install -v"
   end
