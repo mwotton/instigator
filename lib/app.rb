@@ -8,10 +8,13 @@ class App < Thor
   argument :name # don't need it here, but still...
   method_option :project_type, :type => :string, :default => "haskell"
   def setup
-    puts "type: #{options.project_type}"
-    # sadly we have to require this explicitly now. boo.
-    require options.project_type rescue raise "No such project type #{options.project_type}"
-    puts "type: #{options.project_type}"
+    require options.project_type rescue raise"No such project type #{options.project_type}"
+
+    [options.project_type, "github", "jenkins"].each do |task_group|
+      # run preflight if it exists
+      invoke "#{task_group}:preflight" rescue nil
+    end
+    
     invoke "#{options.project_type}:setup", [name]
     puts "Starting github"
     invoke "github:new_project"

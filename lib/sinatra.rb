@@ -11,7 +11,7 @@ class Sinatra < Thor
   
   desc "setup", "set up a sinatra-heroku project"
   def setup
-    puts "sinatra setup called"
+
     guarded "git clone git://github.com/mwotton/heroku-sinatra-app.git #{name}"
     guarded "ls"
     Dir.in_dir name do 

@@ -32,19 +32,10 @@ module GitConfig
     git_attribute 'jenkins.password', 'password'
   end
   
-  # should possibly be elsewhere?  
-  def guarded(task)
-    %x{#{task}}.tap { |x| raise "bad exit: #{$?.exitstatus},#{x}" if $?.exitstatus!=0 }
-  rescue => e
-    raise e unless block_given?
-    yield e
-  end
-
-  
   protected
   def git_attribute(tag, name)
     guarded("git config --global #{tag}") do |error|
-      abort "please add your #{name} to ~/.gitconfig with git config --global #{tag} #{name.upcase}"
+      abort "please add your #{name} to ~/.gitconfig with\n   git config --global #{tag} #{name.upcase}"
     end.chomp
   end
  

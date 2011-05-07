@@ -8,6 +8,12 @@ class Jenkins < Thor
   include GitConfig
   include Thor::Actions
   attr_reader :secret
+
+  desc "preflight", "Check for dependencies"
+  def preflight
+    jenkins_password && jenkins_user
+  end
+
   
   desc "new_project", "set up new jenkins project"
   def new_project
@@ -23,8 +29,11 @@ class Jenkins < Thor
   def self.source_root
     File.join(File.dirname(File.expand_path(__FILE__)), '..', 'templates')
   end
+
+
   
   no_tasks do
+    
     def jenkins_post(path,raw)
       HTTParty.post jenkins_server + path,
       :basic_auth => {

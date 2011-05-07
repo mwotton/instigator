@@ -47,29 +47,33 @@ EOF
   end
   
   no_tasks do
-  def github_post(path, args)
-    # More like NOT::HTTP, amirite?
-    # sadly, octokit isn't working right now.
-    # @client = Octokit::Client.new(:login => 'pengwynn', :token => 'OU812')    
-    options = args.merge(:login => github_user, :token => github_token)
-    net = Net::HTTP.new('github.com',443)
-    net.use_ssl = true
-    req = Net::HTTP::Post.new("/api/v2/json#{path}")
-    req.set_form_data(options)
-    
-    response=net.request(req)
-
-    if response.code.to_i != 200
-      error = JSON.parse(response.body)['error'] rescue "#{response.code}: #{response.body}"
-      abort "github error: #{error}"
+    def preflight
+      github_user && github_token
     end
-    response
-  end
+    
+    def github_post(path, args)
+      # More like NOT::HTTP, amirite?
+      # sadly, octokit isn't working right now.
+      # @client = Octokit::Client.new(:login => 'pengwynn', :token => 'OU812')    
+      options = args.merge(:login => github_user, :token => github_token)
+      net = Net::HTTP.new('github.com',443)
+      net.use_ssl = true
+      req = Net::HTTP::Post.new("/api/v2/json#{path}")
+      req.set_form_data(options)
+      
+      response=net.request(req)
+
+      if response.code.to_i != 200
+        error = JSON.parse(response.body)['error'] rescue "#{response.code}: #{response.body}"
+        abort "github error: #{error}"
+      end
+      response
+    end
 
     def add_notification(ci)
       # log into ci, make sure BUILDMENOW token (or equivalent
       # randomised thing is set
-    
+      
       @ci.set_token
       set_build_token(@ci.token)
     end

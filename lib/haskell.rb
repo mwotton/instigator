@@ -15,6 +15,11 @@ class Haskell < Thor
     File.join(File.dirname(__FILE__), '..', 'templates')
   end
 
+  desc "preflight", "Check for preconditions"
+  def preflight
+    author && email
+  end
+
   desc "setup", "set up a haskell project"
   def setup
     invoke :mkdir
