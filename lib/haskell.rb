@@ -17,13 +17,19 @@ class Haskell < Thor
 
   desc "preflight", "Check for preconditions"
   def preflight
-    author && email
+    author
+    email
+    abort "#{name} already taken on hackage" unless
+      HTTParty.get("http://hackage.haskell.org/package/#{name}").code == 404
+    %x{cabal list --simple-output #{name}} == ""
+    abort "#{name} directory already exists!" if Dir.exists? name
   end
 
   desc "setup", "set up a haskell project"
   def setup
     invoke :mkdir
     Dir.chdir name do
+      puts Dir.pwd
       invoke :skeleton
       invoke :cabal_dev
     end
@@ -33,7 +39,7 @@ class Haskell < Thor
 
   def mkdir
     puts "creating #{Dir.getwd}/#{name}"
-    Dir.mkdir name rescue abort "directory already exists!"
+    Dir.mkdir name
     Dir.mkdir "#{name}/Tests"
   end
 
@@ -43,16 +49,17 @@ class Haskell < Thor
   method_option :lib, :default => true, :type => :boolean
   method_options :app => false, :type => :boolean  
   def skeleton
+    puts "In skeleton: #{Dir.pwd}"
     @mod = name.camelize
-    system "cabal init -m -n #{name} -l BSD3 -a Mark Wotton -e mwotton@gmail.com -c #{options.category} -q"
+    guarded "cabal init -m -n #{name} -l BSD3 -a Mark Wotton -e mwotton@gmail.com -c #{options.category} -q"
     system "rm #{name}.cabal"
     # overwrite the cabal file
-    template 'cabal.tt', "#{name}.cabal"
-    template 'test.tt', "Tests/Test#{@mod}.hs"
-    template 'module.tt', "src/#{@mod}.hs"
-    template 'main.tt',   "src/Main.hs" if options.app?
-    template 'watchr.tt', "watchr.rb"
-    template 'README.tt', "README.md"
+    template 'cabal.tt',  "#{name}/#{name}.cabal"
+    template 'test.tt',   "#{name}/Tests/Test#{@mod}.hs"
+    template 'module.tt', "#{name}/src/#{@mod}.hs"
+    template 'main.tt',   "#{name}/src/Main.hs" if options.app?
+    template 'watchr.tt', "#{name}/watchr.rb"
+    template 'README.tt', "#{name}/README.md"
   end
 
   desc "cabal_dev", "ensure cabal-dev is present"

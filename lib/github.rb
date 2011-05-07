@@ -27,14 +27,15 @@ class Github < Thor
 
   desc "new_project", "new project on github"
   def new_project
-    guarded "git init"
-    guarded "git add ."
-    system "git commit -m 'initial commit'"
-    github_post('/repos/create', :name => name)
-    # make sure it doesn't exist already, don't mind if it fails
-    system "git remote rm origin"
-    guarded "git remote add origin git@github.com:#{github_user}/#{name}"
-    guarded "git push -u origin master"
+    Dir.chdir name do
+      guarded "git init"
+      guarded "git add ."
+      system "git commit -m 'initial commit'"
+      github_post('/repos/create', :name => name)
+      # make sure it doesn't exist already, don't mind if it fails
+      guarded "git remote add origin git@github.com:#{github_user}/#{name}"
+      guarded "git push -u origin master"
+    end
   end
   
   desc "attach", "sync up github and jenkins"

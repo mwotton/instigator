@@ -24,7 +24,7 @@ class Sinatra < Thor
   def setup
 
     guarded "git clone git://github.com/mwotton/heroku-sinatra-app.git #{name}"
-    guarded "ls"
+
     Dir.chdir name do 
       guarded "git remote rm origin" # hide the evidence
       guarded "heroku create #{name}"
