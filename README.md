@@ -26,4 +26,7 @@ Getting started:
   # or a sinatra project on heroku
   instigate MYAPPNAME --project_type=sinatra
 
+TODO
 
+  Clean up reporting - only show commands that fail
+  Script jenkins/github integration
