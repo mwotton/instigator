@@ -18,7 +18,7 @@ class Jenkins < Thor
   desc "new_project", "set up new jenkins project"
   def new_project
     @secret = UUID.new.generate
-    config = ERB.new(File.join(self.source_root, 'config_xml.tt'), binding)
+    config = ERB.new(File.join(Jenkins.source_root, 'config_xml.tt'), binding)
     jenkins_post "/createItem/api/xml?name=#{name}", config
     invoke 'github:attach', [name], :token => @secret
   end
