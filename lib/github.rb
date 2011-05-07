@@ -7,8 +7,16 @@ require 'git_config'
 class Github < Thor
   include GitConfig
   argument :name
-  desc "delete_project", "erase github project. BE VERY SURE"
 
+  desc "preflight", "check dependencies"
+  def preflight
+    abort "you already have a #{name} project on github" unless
+      HTTParty.get("http://github.com/#{github_user}/#{name}").code == 404
+    github_user
+    github_token
+  end
+  
+  desc "delete_project", "erase github project. BE VERY SURE"
   method_option :confirm, :type => :boolean
   def delete_project
     abort "set --confirm to show you really mean it" unless options.confirm?
@@ -49,9 +57,6 @@ EOF
   end
   
   no_tasks do
-    def preflight
-      github_user && github_token
-    end
     
     def github_post(path, args)
       # More like NOT::HTTP, amirite?

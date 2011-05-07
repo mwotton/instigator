@@ -8,13 +8,24 @@ class Sinatra < Thor
   include Thor::Actions
   
   argument :name
+
+  desc "preflight", "Check for preconditions"
+  def preflight
+    # bit rough and ready, but no heroku api for querying
+    # app namespace
+    abort "#{name} is already taken on heroku" unless
+      HTTParty.get("http://#{name}.heroku.com").code == 404
+
+    # these will abort anyway.
+    author && email
+  end
   
   desc "setup", "set up a sinatra-heroku project"
   def setup
 
     guarded "git clone git://github.com/mwotton/heroku-sinatra-app.git #{name}"
     guarded "ls"
-    Dir.in_dir name do 
+    Dir.chdir name do 
       guarded "git remote rm origin" # hide the evidence
       guarded "heroku create #{name}"
     end
