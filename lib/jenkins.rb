@@ -1,6 +1,7 @@
 require 'uuid'
 require 'httparty'
 require 'git_config'
+require 'thor'
 
 class Jenkins < Thor
   argument :name
@@ -11,6 +12,7 @@ class Jenkins < Thor
   desc "new_project", "set up new jenkins project"
   def new_project
     @secret = UUID.new.generate
+    puts Dir.pwd
     template 'config_xml.tt', 'config.xml'
     jenkins_post("/createItem/api/xml?name=#{name}", File.read('config.xml'))
     # post to blah
@@ -19,7 +21,7 @@ class Jenkins < Thor
   end
 
   def self.source_root
-    File.join(File.dirname(__FILE__), '..', 'templates')
+    File.join(File.dirname(File.expand_path(__FILE__)), '..', 'templates')
   end
   
   no_tasks do

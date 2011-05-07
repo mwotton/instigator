@@ -1,5 +1,7 @@
 $LOAD_PATH << File.join(File.dirname(__FILE__), '..', 'lib')
+require 'instigator/util'
 require 'git_config'
+require 'thor'
 
 class Sinatra < Thor
   include GitConfig
@@ -9,9 +11,13 @@ class Sinatra < Thor
   
   desc "setup", "set up a sinatra-heroku project"
   def setup
+    puts "sinatra setup called"
     guarded "git clone git://github.com/mwotton/heroku-sinatra-app.git #{name}"
-    guarded "git remote rm origin" # hide the evidence
-    guarded "cd #{name}; heroku create #{name}"
+    guarded "ls"
+    Dir.in_dir name do 
+      guarded "git remote rm origin" # hide the evidence
+      guarded "heroku create #{name}"
+    end
   end
   
 end

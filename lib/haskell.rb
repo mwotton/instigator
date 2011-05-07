@@ -1,6 +1,8 @@
 require 'active_support/inflector'
 $LOAD_PATH << File.join(File.dirname(__FILE__), '..', 'lib')
 require 'git_config'
+require 'instigator/util'
+require 'thor'
 
 class Haskell < Thor
   include GitConfig
@@ -12,18 +14,22 @@ class Haskell < Thor
   def self.source_root
     File.join(File.dirname(__FILE__), '..', 'templates')
   end
-   
+
   desc "setup", "set up a haskell project"
   def setup
     invoke :mkdir
-    invoke :skeleton
-    invoke :cabal_dev
+    Dir.in_dir name do
+      invoke :skeleton
+      invoke :cabal_dev
+    end
   end
   
   desc "mkdir","create the directory"
 
   def mkdir
-    Dir.mkdir "Tests"
+    puts "creating #{Dir.getwd}/#{name}"
+    Dir.mkdir name rescue abort "directory already exists!"
+    Dir.mkdir "#{name}/Tests"
   end
 
   desc "skeleton", "set up a skeleton haskell project"

@@ -21,7 +21,7 @@ class Github < Thor
   def new_project
     guarded "git init"
     guarded "git add ."
-    guarded "git commit -m 'initial commit'"
+    system "git commit -m 'initial commit'"
     github_post('/repos/create', :name => name)
     guarded "git remote add origin git@github.com:#{github_user}/#{name}"
     guarded "git push -u origin master"
