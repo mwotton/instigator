@@ -18,10 +18,8 @@ class Jenkins < Thor
   desc "new_project", "set up new jenkins project"
   def new_project
     @secret = UUID.new.generate
-    Tempfile.open("/tmp/config_xml") do |f|
-      template 'config_xml.tt', f.path
-      jenkins_post "/createItem/api/xml?name=#{name}", f.read
-    end
+    config = ERB.new(File.join(self.source_root, 'config_xml.tt'), binding)
+    jenkins_post "/createItem/api/xml?name=#{name}", config
     invoke 'github:attach', [name], :token => @secret
   end
 
