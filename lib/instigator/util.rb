@@ -1,11 +1,24 @@
+require 'open4'
+require 'awesome_print'
 
-# TODO: swallow output unless there's an error
+def announce(str)
+  puts "    #{str}"
+end
+
 def guarded(task)
-  %x{#{task}}.tap { |x| raise "bad exit: #{$?.exitstatus},#{x}" if $?.exitstatus!=0 }
-rescue => e
-  if block_given?
-    yield e
+  pid, stdin, stdout, stderr = Open4.popen4 task
+  ignored, status = Process.waitpid2 pid
+ 
+  if status == 0
+    stderr.read
+    stdout.read
   else
-    raise e
+    err = { :status => status, :stdout => stdout.read, :stderr => stderr.read }
+    if block_given?
+      yield err
+    else
+      abort "bad exit:\n#{ap err}"
+    end
   end
+  
 end

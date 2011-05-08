@@ -29,10 +29,10 @@ class Haskell < Thor
   def setup
     invoke :mkdir
     Dir.chdir name do
-      puts Dir.pwd
       invoke :skeleton
       invoke :cabal_dev
     end
+    announce "new haskell project set up"
   end
   
   desc "mkdir","create the directory"
@@ -49,10 +49,9 @@ class Haskell < Thor
   method_option :lib, :default => true, :type => :boolean
   method_options :app => false, :type => :boolean  
   def skeleton
-    puts "In skeleton: #{Dir.pwd}"
     @mod = name.camelize
     guarded "cabal init -m -n #{name} -l BSD3 -a Mark Wotton -e mwotton@gmail.com -c #{options.category} -q"
-    system "rm #{name}.cabal"
+    guarded "rm #{name}.cabal" do end
     # overwrite the cabal file
     template 'cabal.tt',  "#{name}/#{name}.cabal"
     template 'test.tt',   "#{name}/Tests/Test#{@mod}.hs"
@@ -68,7 +67,12 @@ class Haskell < Thor
   desc "cabal_dev", "ensure cabal-dev is present"
   def cabal_dev
     ["cabal-dev", "happy"].each do |prereq|
-      guarded "[ -x `which #{prereq}` ] || cabal install #{prereq}" or raise "#{prereq} not installed"
+      guarded "[ -x `which #{prereq}` ]" do
+        warn "#{prereq} not installed, attempting..."
+        guarded "cabal install #{prereq}" do |err|
+          abort "#{prereq} not installable: #{ap err}"
+        end
+      end
     end
 
     # system "cabal-dev install-deps"

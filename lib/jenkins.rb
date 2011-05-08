@@ -20,14 +20,13 @@ class Jenkins < Thor
     @secret = UUID.new.generate
     config = ERB.new(File.read File.join(Jenkins.source_root, 'config_xml.tt'))
     jenkins_post "/createItem/api/xml?name=#{name}", config.result(binding)
+    announce "new project on jenkins"
     invoke 'github:attach', [name], :token => @secret
   end
 
   def self.source_root
     File.join(File.dirname(File.expand_path(__FILE__)), '..', 'templates')
   end
-
-
   
   no_tasks do
     

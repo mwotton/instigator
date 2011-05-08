@@ -16,9 +16,12 @@ class App < Thor
     end
     
     invoke "#{options.project_type}:setup", [name]
-    puts "Starting github"
+
     invoke "github:new_project"
     invoke "jenkins:new_project"
+    # this has to come last so that the hook set up for jenkins can be fired.
+    invoke "github:push"
+
   end
 
 end
