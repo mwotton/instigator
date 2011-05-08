@@ -20,6 +20,9 @@ Gem::Specification.new do |s|
   s.add_dependency 'i18n'
   s.add_dependency 'uuid'
   s.add_dependency 'watchr'
+  s.add_dependency 'open4'
+  s.add_dependency 'awesome_print'
+  
   
   s.files        = `git ls-files`.split("\n")
   s.executables  = `git ls-files`.split("\n").map{|f| f =~ /^bin\/(.*)/ ? $1 : nil}.compact
