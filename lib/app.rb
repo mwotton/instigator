@@ -1,5 +1,5 @@
 # must be a nicer way of doing this
-$LOAD_PATH << File.join(File.dirname(__FILE__), '..', 'lib')
+# $LOAD_PATH << File.join(File.dirname(__FILE__), '..', 'lib')
 require 'github'
 require 'jenkins'
 
