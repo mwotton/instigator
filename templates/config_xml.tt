@@ -60,7 +60,7 @@
   </axes>
   <builders>
     <hudson.tasks.Shell>
-      <command>bash -c -l &apos;./runtests.sh&apos;</command>
+      <command>bash -c -l &apos;sh ./runtests.sh&apos;</command>
     </hudson.tasks.Shell>
   </builders>
   <publishers>
