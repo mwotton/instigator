@@ -28,6 +28,9 @@ class Sinatra < Thor
     Dir.chdir name do 
       guarded "git remote rm origin" # hide the evidence
       guarded "heroku create #{name}"
+      File.open("runtests.sh", "w") do |f|
+        f.write "bundle exec rspec spec"
+      end
     end
   end
   
