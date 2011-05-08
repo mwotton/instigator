@@ -60,6 +60,9 @@ class Haskell < Thor
     template 'main.tt',   "#{name}/src/Main.hs" if options.app?
     template 'watchr.tt', "#{name}/watchr.rb"
     template 'README.tt', "#{name}/README.md"
+    File.open("runtests.sh", "w") do |f|
+      f.write "tbc -v Tests"
+    end
   end
 
   desc "cabal_dev", "ensure cabal-dev is present"
