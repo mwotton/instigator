@@ -11,7 +11,9 @@ class Jenkins < Thor
 
   desc "preflight", "Check for dependencies"
   def preflight
-    jenkins_password && jenkins_user
+    jenkins_password
+    jenkins_user
+    jenkins_server =~ /^http/ or abort "jenkins_server must be a fully qualified http or https URL" # sanity check
   end
 
   
