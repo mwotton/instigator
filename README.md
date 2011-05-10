@@ -1,6 +1,6 @@
 Instigator is a template for starting new projects, intended to make it
 easier to start a project with all of the goodies like testing, github
-repo and optionally Jenkins integration set up.
+repo and Jenkins integration set up.
 
 Currently there are recipes for Sinatra apps running on heroku, and
 Haskell apps and libraries.
