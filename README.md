@@ -8,7 +8,7 @@ Haskell apps and libraries.
 Getting started:
 
     bundle
-    # only needs to be done once per machine - substitue your CI server here.
+    # only needs to be done once per machine - substitute your CI server here.
     jenkins nodes --host ci.shimweasel.com --port 80
     git config --global github.token YOURTOKEN 
     git config --global github.user YOURLOGIN
